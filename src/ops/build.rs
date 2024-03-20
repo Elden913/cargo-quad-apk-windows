@@ -257,19 +257,25 @@ fn build_apks(
 
         java_cmd.cwd(&target_directory).exec()?;
 
-        let mut d8_cmd = ProcessBuilder::new(&d8_path);
+        let mut d8_cmd = ProcessBuilder::new("cmd");
+        d8_cmd.arg("/c");
+        let mut d8_cmd_str = String::from(
+            "C:\\Users\\elden\\AppData\\Local\\Android\\Sdk\\build-tools\\31.0.0\\d8.bat ",
+        );
         for class_file in glob::glob(target_directory.join("**/*.class").to_str().unwrap()).unwrap()
         {
             let file = class_file.unwrap();
-            d8_cmd.arg(file.to_str().unwrap());
+            d8_cmd_str += file.to_str().unwrap();
+            d8_cmd_str += " ";
         }
         for (runtime_jar, _) in &java_files.runtime_jar_files {
-            d8_cmd.arg(&runtime_jar);
+            d8_cmd_str += &runtime_jar.to_str().unwrap();
+            d8_cmd_str += " ";
         }
         // otherwise "Type `java.lang.System` was not found" error
-        d8_cmd.arg("--no-desugaring");
-        d8_cmd.arg("--min-api")
-            .arg("26");
+        d8_cmd_str += "--no-desugaring ";
+        d8_cmd_str += "--min-api 26";
+        d8_cmd.arg(&d8_cmd_str);
 
         d8_cmd.cwd(&target_directory).exec()?;
 

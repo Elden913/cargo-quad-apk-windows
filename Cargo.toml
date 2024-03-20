@@ -1,5 +1,5 @@
 [package]
-name = "cargo-quad-apk"
+name = "cargo-quad-apk-windows"
 version = "0.1.4"
 authors = ["Pierre Krieger <pierre.krieger1708@gmail.com>", "Philip Alldredge <philip@philipalldredge.com>", "Fedor Logachev <not.fl3@gmail.com>"]
 license = "MIT"
